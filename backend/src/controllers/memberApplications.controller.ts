@@ -1,3 +1,4 @@
+import MemberApplicationsService from '@/services/memberApplications.service';
 import { NextFunction, Request, Response } from 'express';
 
 const users = [
@@ -8,11 +9,13 @@ const users = [
   { id: 5, name: 'batman', email: 'example5@email.com', phone: '01234567894', track: 'embedded' },
 ];
 class MemberApplicationsController {
+  public memberApplicationsService = new MemberApplicationsService();
+
   public getMemberApplications = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       // const findAllUsersData: User[] = await this.userService.findAllUser();
-
-      res.status(200).json({ data: users, message: 'findAll' });
+      const memberApplications = await this.memberApplicationsService.findAllMemberApplications();
+      res.status(200).json(memberApplications);
     } catch (error) {
       next(error);
     }

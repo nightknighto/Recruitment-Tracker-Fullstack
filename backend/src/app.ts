@@ -7,20 +7,23 @@ import hpp from 'hpp';
 import morgan from 'morgan';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
-import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from '@config';
+import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS, MONGO_URI } from '@config';
 import { Routes } from '@interfaces/routes.interface';
 import errorMiddleware from '@middlewares/error.middleware';
 import { logger, stream } from '@utils/logger';
+import mongoose from 'mongoose';
 
 class App {
   public app: express.Application;
   public env: string;
   public port: string | number;
+  public mongooseConnect: Promise<typeof mongoose>;
 
   constructor(routes: Routes[]) {
     this.app = express();
     this.env = NODE_ENV || 'development';
     this.port = PORT || 3000;
+    this.mongooseConnect = mongoose.connect(MONGO_URI, { dbName: 'RecruitmentApplications' });
 
     this.initializeMiddlewares();
     this.initializeRoutes(routes);
@@ -29,12 +32,18 @@ class App {
   }
 
   public listen() {
-    this.app.listen(this.port, () => {
-      logger.info(`=================================`);
-      logger.info(`======= ENV: ${this.env} =======`);
-      logger.info(`🚀 Tracker App listening on the port ${this.port}`);
-      logger.info(`=================================`);
-    });
+    this.mongooseConnect
+      .then(() => {
+        this.app.listen(this.port, () => {
+          logger.info(`=================================`);
+          logger.info(`======= ENV: ${this.env} =======`);
+          logger.info(`🚀 Tracker App listening on the port ${this.port}`);
+          logger.info(`=================================`);
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   public getServer() {
