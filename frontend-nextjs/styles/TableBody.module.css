@@ -1,0 +1,53 @@
+.main {
+    display: flex;
+    margin: 40px 30px;
+    justify-content: space-between;
+}
+
+.namesList {
+    background-color: aquamarine;
+    width: 25%;
+    max-width: 400px;
+    box-shadow: 1px 1px 10px 1px black;
+    padding: 10px;
+}
+
+.description {
+    width: 70%;
+    background-color: coral;
+    box-shadow: 1px 1px 10px 1px black;
+    padding: 0 20px;
+}
+
+.description header {
+    text-align: center;
+    position: relative;
+}
+
+.controls {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.controls img {
+    display: block;
+    width: 70px;
+    /* border-radius: 50%; */
+}
+
+.twoItemsContainer {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+
+}
+
+.twoItems {
+    width: 80%;
+}
+
+.twoItems div {
+    display: inline-block;
+    width: 50%;
+}

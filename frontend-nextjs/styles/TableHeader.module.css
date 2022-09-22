@@ -1,0 +1,24 @@
+.header {
+    background-color: grey;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+    padding: 0 20px;
+}
+
+.detailDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.detailDiv h2 {
+    margin: 0
+}
+
+.header img {
+    width: 50px;
+    border-radius: 50%;
+}
