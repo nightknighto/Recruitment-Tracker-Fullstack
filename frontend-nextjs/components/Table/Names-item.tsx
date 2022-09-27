@@ -1,12 +1,22 @@
+import { useContext } from "react"
+import IRecruitmentData from "../../utils/interfaces/RecruitmentData"
+import { changeSelectionContext } from "./Table-Body"
 
-export default function NamesItem({ name, className }: NamesItemProps) {
+export default function NamesItem({ object, className, selected }: NamesItemProps) {
+
+    const changeSelection = useContext(changeSelectionContext)
+
+    function onClick() {
+        changeSelection(object)
+    }
 
     return (
-        <p {...{className}}>{name}</p>
+        <p {...{className}} style={selected? {color: 'red'} : {}} onClick={onClick}>{object.name}</p>
     )
 }
 
 interface NamesItemProps {
-    name: string,
-    className: string
+    object: IRecruitmentData,
+    className: string,
+    selected?: boolean
 }

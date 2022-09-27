@@ -1,52 +1,46 @@
+import React, { useState, useEffect } from 'react'
 import styles from '../../styles/TableBody.module.css'
+import IRecruitmentData from '../../utils/interfaces/RecruitmentData'
+import * as RecruitmentDataAPI from '../../utils/apis/RecruitmentDataAPI'
 import NamesAdd from './Names-Add'
 import NamesCategories from './Names-Categories'
 import NamesSearchbar from './Names-Searchbar'
+import PersonDetails from './Person-Details'
+
+export const changeSelectionContext = React.createContext<((targ: IRecruitmentData) => void)>(() => {})
 
 export default function TableBody() {
+    const [data, setData] = useState<IRecruitmentData[]>([])
+    const [selectedObj, setSelectedObj] = useState<IRecruitmentData | null>(data[1])
+
+    useEffect( () => {
+        // self-invoking function
+        (async () => {
+            const getData = await RecruitmentDataAPI.getAllData()
+            setData(getData);
+        })()
+        
+    }, [])
+
+    function changeSelection(target: IRecruitmentData) {
+        if(selectedObj !== target) {
+            setSelectedObj(target)
+        } else {
+            setSelectedObj(null)
+        }
+    }
 
     return (
-        <main className={styles.main}>
-            <div className={styles.namesList}>
-                <NamesSearchbar />
-                <NamesCategories />
-                <NamesAdd />      
-            </div>
-            <div className={styles.description}>
-                <header>
-                    <div>
-                        <h2>Thundertaker</h2>
-                        <h3>Track: Web. Status: Pending</h3>
-                    </div>
-                    <div className={styles.controls}>
-                        <img src="https://picsum.photos/200" alt="controls"/>
-                        controls
-                    </div>
-                </header>
-                <div>
-                    <div className={styles.twoItemsContainer}>
-                        <section className={styles.twoItems}>
-                            <div>
-                                <p>Email: thunder@taker.com</p>
-                                <p>Phone: 011111111111</p>
-                            </div>
-                            <div>
-                                <p>Year: 5th</p>
-                                <p>Submission Date: 25/9/2022</p>
-                            </div>
-                        </section>
-                    </div>
-                    <section>
-                        <h3>Experience</h3>
-                        <p>dolor sit amet et delectus accommodare his consul copiosae legendos at vix ad putent delectus delicata usu. Vidit dissentiet eos cu eum an brute copiosae hendrerit. Eos erant dolorum an. Per facer affert ut. Mei iisque</p>
-                        <h3>Interests</h3>
-                        <p>dolor sit amet et delectus accommodare his consul copiosae legendos at vix ad putent delectus delicata usu. Vidit dissentiet eos cu eum an brute copiosae hendrerit. Eos erant dolorum an. Per facer affert ut. Mei iisque</p>
-                        <h3>Notes</h3>
-                        <p>dolor sit amet et delectus accommodare his consul copiosae legendos at vix ad putent delectus delicata usu. Vidit dissentiet eos cu eum an brute copiosae hendrerit. Eos erant dolorum an. Per facer affert ut. Mei iisque</p>
-                    </section>
+        <changeSelectionContext.Provider value={changeSelection}>
+            <main className={styles.main}>
+                <div className={styles.namesList}>
+                    <NamesSearchbar />
+                    <NamesCategories data={data} selectedObj={selectedObj}/>
+                    <NamesAdd />      
                 </div>
-            </div>
-        </main>
+                <PersonDetails object={selectedObj} />
+            </main>
+        </changeSelectionContext.Provider>
 
     )
 }
