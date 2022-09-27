@@ -8,6 +8,13 @@ class MemberApplicationsService {
     return memberApplications;
   }
 
+  public async updateMemberApplicationByID(updateData) {
+    const { _id, data } = updateData;
+    // eslint-disable-next-line prettier/prettier
+    const updateResponse = await this.memberApplications.updateOne({ '_id': _id }, data);
+    return updateResponse;
+  }
+
   //     public async findUserById(userId: number): Promise<User> {
   //       const findUser: User = this.users.find(user => user.id === userId);
   //       if (!findUser) throw new HttpException(409, "User doesn't exist");

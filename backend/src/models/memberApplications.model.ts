@@ -44,6 +44,14 @@ const memberApplicationsSchema = new Schema(
       type: String,
       required: true,
     },
+    status: {
+      type: String,
+      required: true,
+    },
+    submissionTime: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true, collection: 'RecruitmentApplications' },
 );

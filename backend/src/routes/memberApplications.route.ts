@@ -13,9 +13,8 @@ class MemberApplicationsRoute implements Routes {
 
   private initializeRoutes() {
     this.router.get(`${this.path}`, this.memberApplicationsController.getMemberApplications);
-    this.router.get(`${this.path}/:track`, this.memberApplicationsController.getTrackMemberApplications);
+    this.router.put(`${this.path}`, this.memberApplicationsController.updateMemberApplicationByID);
     // this.router.post(`${this.path}`, validationMiddleware(CreateUserDto, 'body'), this.usersController.createUser);
-    // this.router.put(`${this.path}/:id(\\d+)`, validationMiddleware(CreateUserDto, 'body', true), this.usersController.updateUser);
     // this.router.delete(`${this.path}/:id(\\d+)`, this.usersController.deleteUser);
   }
 }
