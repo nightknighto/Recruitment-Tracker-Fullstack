@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import styles from '../../styles/TableHeader.module.css'
 
 export default function TableHeader() {
@@ -17,7 +18,7 @@ export default function TableHeader() {
                 </div>
             </div>
             <div>
-                <img src="https://picsum.photos/200" alt="profile img"/>
+                <img src="https://picsum.photos/200" alt="profile img" layout='fill' objectFit='cover'/>
             </div>
         </header>
     )

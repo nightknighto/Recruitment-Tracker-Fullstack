@@ -24,18 +24,6 @@
     position: relative;
 }
 
-.controls {
-    position: absolute;
-    top: 0;
-    right: 0;
-}
-
-.controls img {
-    display: block;
-    width: 70px;
-    /* border-radius: 50%; */
-}
-
 .twoItemsContainer {
     display: flex;
     justify-content: center;

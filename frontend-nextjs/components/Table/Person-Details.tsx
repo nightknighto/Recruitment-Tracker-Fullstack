@@ -1,12 +1,17 @@
+import Image from 'next/image';
 import styles from '../../styles/TableBody.module.css'
 import IRecruitmentData from '../../utils/interfaces/RecruitmentData'
+import PersonControls from './Person-Controls';
 
 export default function PersonDetails({ object }: PersonDetailsProps) {
 
     if(!object) return null;
 
     const {
-        _id,collegeID,
+        _id,
+        collegeID,
+        status,
+        submissionTime,
         email,
         knowledge,
         name,
@@ -24,12 +29,9 @@ export default function PersonDetails({ object }: PersonDetailsProps) {
             <header>
                 <div>
                     <h2>{name}</h2>
-                    <h3>Track: {track}. Status: Pending</h3>
+                    <h3>Track: {track}. Status: {status}</h3>
                 </div>
-                <div className={styles.controls}>
-                    <img src="https://picsum.photos/200" alt="controls"/>
-                    controls
-                </div>
+                <PersonControls />
             </header>
             <div>
                 <div className={styles.twoItemsContainer}>
@@ -40,7 +42,7 @@ export default function PersonDetails({ object }: PersonDetailsProps) {
                         </div>
                         <div>
                             <p>Year: {year}</p>
-                            <p>Submission Date: 25/9/2022</p>
+                            <p>Submission Date: {submissionTime}</p>
                         </div>
                     </section>
                 </div>
