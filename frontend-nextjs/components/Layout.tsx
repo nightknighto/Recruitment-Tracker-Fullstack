@@ -1,10 +1,11 @@
 import { ReactNode } from "react";
+import AppBar from "./AppBar";
 
 export default function Layout({ children }: LayoutProps) {
     
     return (
         <>
-            <h1>Header</h1>
+            <AppBar />
             {children}
         </>
     )

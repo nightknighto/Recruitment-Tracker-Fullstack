@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styles from '../../styles/TableBody.module.css'
 import IRecruitmentData from '../../utils/interfaces/RecruitmentData'
-import * as RecruitmentDataAPI from '../../utils/apis/RecruitmentDataAPI'
+import RecruitmentDataAPI from '../../utils/apis/RecruitmentDataAPI'
 import NamesAdd from './Names-Add'
 import NamesCategories from './Names-Categories'
 import NamesSearchbar from './Names-Searchbar'
