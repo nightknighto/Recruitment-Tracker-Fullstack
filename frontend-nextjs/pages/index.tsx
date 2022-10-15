@@ -30,7 +30,8 @@ const chartBorderColors = ['white']
 
 const Home: NextPage = () => {
 
-  const [trackDoughnutData, setTrackDoughnutData] = useState<any>(null);
+  const [track1DoughnutData, setTrack1DoughnutData] = useState<any>(null);
+  const [track2DoughnutData, setTrack2DoughnutData] = useState<any>(null);
   const [yearDoughnutData, setYearDoughnutData] = useState<any>(null);
   const [numOfApplicants, setNumOfApplicants] = useState(0);
   const { data: APIdata } = useContext(DataContext)
@@ -42,7 +43,7 @@ const Home: NextPage = () => {
     setNumOfApplicants(APIdata.length)
   }, [APIdata])
 
-  // Effect to get the data for the *track* doughnut chart
+  // Effect to get the data for the *first preference* doughnut chart
   useEffect( () => {
     if(!APIdata) return;
 
@@ -68,7 +69,37 @@ const Home: NextPage = () => {
       }]
     }
     
-    setTrackDoughnutData(newObj)
+    setTrack1DoughnutData(newObj)
+
+  }, [APIdata])
+
+  // Effect to get the data for the *first preference* doughnut chart
+  useEffect( () => {
+    if(!APIdata) return;
+
+    const labels: string[] = []
+    APIdata.forEach( (data) => {
+      if(!labels.includes(data.otherTrackInterest) && data.otherTrackInterest.length < 30) labels.push(data.otherTrackInterest);
+    })
+
+    const stats: number[] = []
+    labels.forEach( (label) => {
+      const count = APIdata.filter( (data) => data.otherTrackInterest === label).length
+      stats.push(count)
+    });
+
+    const newObj = {
+      labels: labels,
+      datasets: [{
+        label: '# per Track',
+        data: stats,
+        backgroundColor: chartBackgroundColors,
+        borderColor: chartBorderColors,
+        borderWidth: 1,
+      }]
+    }
+    
+    setTrack2DoughnutData(newObj)
 
   }, [APIdata])
 
@@ -129,19 +160,43 @@ const Home: NextPage = () => {
               </Grid>
               <Grid item xs={12}>
                 <Paper elevation={3}>
-                  <Box padding={2}>
-                    {trackDoughnutData && <Doughnut data={yearDoughnutData}/>}
+                  <Typography variant="h5" component="h2" textAlign="center">
+                    Applicants' Year
+                  </Typography>
+                  <Box padding={2} marginTop={-1}>
+                    {yearDoughnutData && <Doughnut data={yearDoughnutData}/>}
                   </Box>
                 </Paper>
               </Grid>
             </Grid>
           </Grid>
           <Grid item xs={12} md={6}>
-            <Paper elevation={3}>
-              <Box padding={2}>
-                {trackDoughnutData && <Doughnut data={trackDoughnutData}/>}
-              </Box>
-            </Paper>
+            <Grid container>
+              <Grid item xs={12}>
+                <Paper elevation={3}>
+                  <Box marginTop={3}>
+                    <Typography variant="h5" component="h2" textAlign="center">
+                      First Preference
+                    </Typography>
+                    <Box padding={2} marginTop={-1}>
+                      {track1DoughnutData && <Doughnut data={track1DoughnutData}/>}
+                    </Box>
+                  </Box>
+                </Paper>
+              </Grid>
+              <Grid item xs={12}>
+                <Paper elevation={3}>
+                  <Box marginTop={3}>
+                    <Typography variant="h5" component="h2" textAlign="center">
+                      Second Preference
+                    </Typography>
+                    <Box padding={2} marginTop={-1}>
+                      {track2DoughnutData && <Doughnut data={track2DoughnutData}/>}
+                    </Box>
+                  </Box>
+                </Paper>
+              </Grid>
+            </Grid>
           </Grid>
 
         </Grid>

@@ -1,8 +1,8 @@
 import data from '../data.json'
-import IRecruitmentData from '../interfaces/RecruitmentData'
+import { IRecruitmentData } from '../types/RecruitmentDataTypes'
 
 async function getAllData() {
-    return data as IRecruitmentData[]
+    return data as unknown as IRecruitmentData[]
 }
 
 const RecruitmentDataAPI = {

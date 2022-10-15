@@ -1,5 +1,7 @@
 import React, { MouseEventHandler, useEffect, useState } from 'react'
 import styles from '../../styles/PersonControls.module.css'
+import SettingsIcon from '@mui/icons-material/Settings';
+import { Box, Button, Typography } from '@mui/material';
 
 export default function PersonControls() {
     const [open, setOpen] = useState(false)
@@ -23,10 +25,18 @@ export default function PersonControls() {
 
     return (
         <>
-        <div className={styles.controls} onClick={toggleControls}>
-            {/* <img src="https://picsum.photos/200" alt="controls"/> */}
-            controls
-        </div>
+        <Box position="absolute" right="0" top="0">
+            <Button onClick={toggleControls}>
+                <Box display="block">
+                    <SettingsIcon sx={{ fontSize: 60}} />
+                    <Box marginTop={-1} display="block">
+                        <Typography>
+                            controls
+                        </Typography>
+                    </Box>
+                </Box>
+            </Button>
+        </Box>
         { open && 
             <div className={styles.modalBackground} onClick={closeModal}>
                 <div className={styles.modal} onClick={innerModalPreventPropagation}>

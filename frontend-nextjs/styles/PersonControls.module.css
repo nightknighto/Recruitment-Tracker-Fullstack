@@ -1,16 +1,3 @@
-
-.controls {
-    position: absolute;
-    top: 0;
-    right: 0;
-}
-
-.controls img {
-    display: block;
-    width: 70px;
-    /* border-radius: 50%; */
-}
-
 .modalBackground {
     background-color: #1a1a1a6b;
     position: fixed;

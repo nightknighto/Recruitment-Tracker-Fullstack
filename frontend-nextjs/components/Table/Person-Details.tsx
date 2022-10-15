@@ -1,6 +1,6 @@
 import { Box, Grid, Paper, Typography } from '@mui/material';
 import Image from 'next/image';
-import IRecruitmentData from '../../utils/interfaces/RecruitmentData'
+import {IRecruitmentData} from '../../utils/types/RecruitmentDataTypes'
 import PersonControls from './Person-Controls';
 
 // fieldsMap: [displayed title, property name]

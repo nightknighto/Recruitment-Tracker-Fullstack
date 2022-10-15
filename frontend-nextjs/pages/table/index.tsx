@@ -5,7 +5,7 @@ import NamesCategories from '../../components/Table/Names-Categories'
 import NamesSearchbar from '../../components/Table/Names-Searchbar'
 import PersonDetails from '../../components/Table/Person-Details'
 import RecruitmentDataAPI from '../../utils/apis/RecruitmentDataAPI'
-import IRecruitmentData from '../../utils/interfaces/RecruitmentData'
+import {IRecruitmentData, TracksType} from '../../utils/types/RecruitmentDataTypes'
 import styles from '../../styles/Table.module.css'
 import { DataContext } from '../_app'
 import Grid from '@mui/material/Grid'
@@ -15,7 +15,10 @@ export const changeSelectionContext = React.createContext<((targ: IRecruitmentDa
 
 export default function Table() {
     const {data, changeData} = useContext(DataContext)
+    const [filteredData, setFilteredData] = useState<IRecruitmentData[] | null>(null)
     const [selectedObj, setSelectedObj] = useState<IRecruitmentData | null>(null)
+    const [filterByName, setFilterByName] = useState<string>("")
+    const [filterByTrack, setFilterByTrack] = useState<TracksType | 'all'>("all")
 
     function changeSelection(target: IRecruitmentData) {
         if(selectedObj !== target) {
@@ -25,7 +28,29 @@ export default function Table() {
         }
     }
 
-    if(!data) return;
+    function changeNameFilter(target: string) {
+        setFilterByName(target)
+    }
+
+    function changeTrackFilter(target: TracksType | 'all') {
+        setFilterByTrack(target)
+    }
+
+    // Data filteration
+    useEffect( () => {
+        if(data) {
+            let filtered = data
+            if(filterByName !== "") {
+                filtered = filtered.filter( obj => obj.name.toLowerCase().includes(filterByName.toLowerCase()))
+            }
+            if(filterByTrack !== "all") {
+                filtered = filtered.filter( obj => obj.track === filterByTrack)
+            }
+            setFilteredData(filtered)
+        }
+    }, [filterByName, filterByTrack, data])
+
+    if(!filteredData) return;
     
     return (
         <Layout>
@@ -37,9 +62,9 @@ export default function Table() {
                                 <Paper elevation={10} sx={{backgroundColor: "light"}}>
                                     <Box>
                                         <Box padding={2} marginBottom={2} borderBottom="1px solid grey">
-                                            <NamesSearchbar />
+                                            <NamesSearchbar changeNameFilter={changeNameFilter} changeTrackFilter={changeTrackFilter} />
                                         </Box>
-                                        <NamesCategories data={data} selectedObj={selectedObj}/>
+                                        <NamesCategories data={filteredData} selectedObj={selectedObj}/>
                                         <Box padding={2} marginBottom={2} borderBottom="1px solid grey">
                                             <NamesAdd />  
                                         </Box>

@@ -2,7 +2,7 @@ import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { createContext, useEffect, useState } from 'react'
-import IRecruitmentData from '../utils/interfaces/RecruitmentData'
+import {IRecruitmentData} from '../utils/types/RecruitmentDataTypes'
 import RecruitmentDataAPI from '../utils/apis/RecruitmentDataAPI'
 
 export const DataContext = createContext<DataContextType>({data: null, changeData: () => {}})

@@ -1,5 +1,5 @@
 import { Box, Paper, Typography } from '@mui/material'
-import IRecruitmentData from '../../utils/interfaces/RecruitmentData'
+import {IRecruitmentData, TracksType} from '../../utils/types/RecruitmentDataTypes'
 import NamesItem from './Names-item'
 
 export default function NamesCategories({ data, selectedObj }: NamesCategoriesProps) {

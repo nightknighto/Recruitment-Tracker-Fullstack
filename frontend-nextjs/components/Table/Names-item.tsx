@@ -1,7 +1,7 @@
 import { Typography } from "@mui/material";
 import { useContext } from "react";
 import { changeSelectionContext } from "../../pages/table";
-import IRecruitmentData from "../../utils/interfaces/RecruitmentData";
+import {IRecruitmentData} from "../../utils/types/RecruitmentDataTypes";
 
 export default function NamesItem({
     object,
