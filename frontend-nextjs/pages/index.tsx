@@ -161,7 +161,7 @@ const Home: NextPage = () => {
               <Grid item xs={12}>
                 <Paper elevation={3}>
                   <Typography variant="h5" component="h2" textAlign="center">
-                    Applicants' Year
+                    Applicants Year
                   </Typography>
                   <Box padding={2} marginTop={-1}>
                     {yearDoughnutData && <Doughnut data={yearDoughnutData}/>}
