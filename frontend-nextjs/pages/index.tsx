@@ -4,93 +4,100 @@ import type { NextPage } from 'next'
 import { Doughnut } from 'react-chartjs-2'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import Layout from '../components/Layout'
-import { useEffect, useState } from 'react';
-import RecruitmentDataAPI from '../utils/apis/RecruitmentDataAPI';
-
-
+import { useContext, useEffect, useState } from 'react';
+import { DataContext } from './_app';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export const data = {
-  labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-  datasets: [
-    {
-      label: '# per Track',
-      data: [12, 19, 3, 5, 2, 3],
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(255, 159, 64, 0.2)',
-      ],
-      borderColor: [
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)',
-      ],
-      borderWidth: 1,
-    },
-  ],
-};
+const chartBackgroundColors = [
+  '#e25668',
+  '#e28956',
+  '#e2cf56',
+  '#aee256',
+  '#68e256',
+  '#56e289',
+  '#56e2cf',
+  '#56aee2',
+  '#5668e2',
+  '#8956e2',
+  '#cf56e2',
+  '#e256ae',
+  '#e25668',
+  '#e28956',
+]
+
+const chartBorderColors = ['white']
+
 const Home: NextPage = () => {
 
-  const [doughnutData, setDoughnutData] = useState(data);
+  const [trackDoughnutData, setTrackDoughnutData] = useState<any>(null);
+  const [yearDoughnutData, setYearDoughnutData] = useState<any>(null);
   const [numOfApplicants, setNumOfApplicants] = useState(0);
+  const { data: APIdata } = useContext(DataContext)
 
+  // Effect to get the number of applicants
   useEffect( () => {
-    async function fetchData() {
-      const allData = await RecruitmentDataAPI.getAllData()
-      setNumOfApplicants(allData.length)
+    if(!APIdata) return;
 
-      const labels: string[] = []
-      allData.forEach( (data) => {
-        if(!labels.includes(data.track)) labels.push(data.track);
-      })
+    setNumOfApplicants(APIdata.length)
+  }, [APIdata])
 
-      const data: number[] = []
-      labels.forEach( (label) => {
-        const count = allData.filter( (data) => data.track === label).length
-        data.push(count)
-      });
+  // Effect to get the data for the *track* doughnut chart
+  useEffect( () => {
+    if(!APIdata) return;
 
-      const newObj = {
-        labels: labels,
-        datasets: [{
-          label: '# per Track',
-          data: data,
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)',
-          ],
-          borderColor: [
-            'rgba(255, 99, 132, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)',
-          ],
-          borderWidth: 1,
+    const labels: string[] = []
+    APIdata.forEach( (data) => {
+      if(!labels.includes(data.track)) labels.push(data.track);
+    })
 
-        }]
-      }
-      
-      setDoughnutData(newObj)
+    const stats: number[] = []
+    labels.forEach( (label) => {
+      const count = APIdata.filter( (data) => data.track === label).length
+      stats.push(count)
+    });
 
+    const newObj = {
+      labels: labels,
+      datasets: [{
+        label: '# per Track',
+        data: stats,
+        backgroundColor: chartBackgroundColors,
+        borderColor: chartBorderColors,
+        borderWidth: 1,
+      }]
     }
+    
+    setTrackDoughnutData(newObj)
 
+  }, [APIdata])
 
-    fetchData();
-  }, [])
+  // Effect to get the data for the *year* doughnut chart
+  useEffect( () => {
+    if(!APIdata) return;
+
+    const years = ["1st", "2nd", "3rd", "4th", "5th"]
+
+    const stats: number[] = []
+    years.forEach( (year) => {
+      const count = APIdata.filter( (data) => data.year === year).length
+      stats.push(count)
+    });
+
+    const newObj = {
+      labels: years,
+      datasets: [{
+        label: '# per Year',
+        data: stats,
+        backgroundColor: chartBackgroundColors,
+        borderColor: chartBorderColors,
+        borderWidth: 1,
+      }]
+    }
+    
+    setYearDoughnutData(newObj)
+
+  }, [APIdata])
 
 
   return (
@@ -107,21 +114,32 @@ const Home: NextPage = () => {
             </Box>
           </Grid>
           <Grid item xs={12} md={6}>
-            <Paper elevation={3}>
-              <Box paddingLeft={3}>
-                <Typography variant="h5" component="h2">
-                  Number of Applications
-                </Typography>
-                <Typography variant="h3" component="p">
-                  {numOfApplicants}
-                </Typography>
-              </Box>
-            </Paper>
+            <Grid container>
+              <Grid item xs={12}>
+                <Paper elevation={3}>
+                  <Box paddingLeft={3} marginBottom={2}>
+                    <Typography variant="h5" component="h2">
+                      Number of Applications
+                    </Typography>
+                    <Typography variant="h3" component="p">
+                      {numOfApplicants}
+                    </Typography>
+                  </Box>
+                </Paper>
+              </Grid>
+              <Grid item xs={12}>
+                <Paper elevation={3}>
+                  <Box padding={2}>
+                    {trackDoughnutData && <Doughnut data={yearDoughnutData}/>}
+                  </Box>
+                </Paper>
+              </Grid>
+            </Grid>
           </Grid>
           <Grid item xs={12} md={6}>
             <Paper elevation={3}>
               <Box padding={2}>
-                {doughnutData && <Doughnut data={doughnutData}/>}
+                {trackDoughnutData && <Doughnut data={trackDoughnutData}/>}
               </Box>
             </Paper>
           </Grid>

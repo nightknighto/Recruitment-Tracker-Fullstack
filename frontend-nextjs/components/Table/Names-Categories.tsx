@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react'
-import styles from '../../styles/Names-Categories.module.css'
+import { Box, Paper, Typography } from '@mui/material'
 import IRecruitmentData from '../../utils/interfaces/RecruitmentData'
 import NamesItem from './Names-item'
 
@@ -9,47 +8,37 @@ export default function NamesCategories({ data, selectedObj }: NamesCategoriesPr
     const acceptedApps = data.filter( app => app.status === "accepted")
     const rejectedApps = data.filter( app => app.status === "rejected")
 
+    const categories = [
+        {name: "Pending", data: pendingApps, color: "primary"},
+        {name: "Accepted", data: acceptedApps, color: "secondary"},
+        {name: "Rejected", data: rejectedApps, color: "error"}
+    ]
+
     return (
-        <div>
-            <section>
-                { pendingApps.length > 0 && 
-                    <>
-                        <h3>Pending</h3>
-                        {
-                            pendingApps.map( obj => (
-                                <NamesItem object={obj} className={styles.name} selected={selectedObj === obj} key={obj._id}/>
-                            ))
-                        }
-                    </>
+        <Box paddingBottom={2} marginBottom={2} borderBottom="1px solid grey">
+            <Box component="section" maxHeight={600} overflow={"auto"}>
+                {
+                    categories.map( (category) => (
+                        category.data.length > 0 ? 
+                        (
+                            <>
+                                <Box sx={{marginBottom: "0.5rem", background: "linear-gradient(to bottom right, white, silver 74%)"}} paddingLeft={1}>
+                                    <Typography color={category.color} variant="h4">{category.name}</Typography>
+                                </Box>
+                                <Box paddingLeft={1} maxHeight={300} overflow={"auto"}>
+                                {
+                                    category.data.map( obj => (
+                                        <NamesItem key={obj._id} object={obj} selected={selectedObj === obj}/>
+                                    ))
+                                }
+                                </Box>
+                            </>
+                        )
+                        : null
+                    ))
                 }
-            </section>
-            <section>
-                { acceptedApps.length > 0 && 
-                    <>
-                        <h3>Accepted</h3>
-                        {/* <NamesItem name='Sami Zayn ▶' className={styles.name} /> */}
-                        {
-                            acceptedApps.map( obj => (
-                                <NamesItem object={obj} className={styles.name} selected={selectedObj === obj} key={obj._id}/>
-                            ))
-                        }
-                    </>
-                }
-            </section>
-            <section>
-                { rejectedApps.length > 0 && 
-                    <>
-                        <h3>Rejected</h3>
-                {/* <NamesItem name='Thundertaker &rarr;' className={styles.name} /> */}
-                        {
-                            rejectedApps.map( obj => (
-                                <NamesItem object={obj} className={styles.name} selected={selectedObj === obj} key={obj._id}/>
-                            ))
-                        }
-                    </>
-                }
-            </section>
-        </div>
+            </Box>
+        </Box>
     )
 }
 

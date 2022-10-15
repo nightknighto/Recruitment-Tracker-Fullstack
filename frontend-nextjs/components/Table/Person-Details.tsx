@@ -1,73 +1,82 @@
+import { Box, Grid, Paper, Typography } from '@mui/material';
 import Image from 'next/image';
-import styles from '../../styles/TableBody.module.css'
 import IRecruitmentData from '../../utils/interfaces/RecruitmentData'
 import PersonControls from './Person-Controls';
+
+// fieldsMap: [displayed title, property name]
+const fieldsMap: [string, string][] = [
+    ["Knowledge", "knowledge"],
+    ["Reason for choosing the track", "trackReason"],
+    ["Second Track Interest", "otherTrackInterest"],
+    ["Second Track Reason", "otherTrackInterestReason"],
+    ["Past Student Activites", "otherStudentActivites"]
+]
 
 export default function PersonDetails({ object }: PersonDetailsProps) {
 
     if(!object) return null;
 
     const {
-        _id,
         collegeID,
         status,
         submissionTime,
         email,
-        knowledge,
         name,
-        otherStudentActivites,
-        otherTrackInterest,
         phone,
         track,
-        trackReason,
         year,
-        otherTrackInterestReason
     } = object
 
     return (
-        <div className={styles.description}>
-            <header>
-                <div>
-                    <h2>{name}</h2>
-                    <h3>Track: {track}. Status: {status}</h3>
-                </div>
-                <PersonControls />
-            </header>
-            <div>
-                <div className={styles.twoItemsContainer}>
-                    <section className={styles.twoItems}>
-                        <div>
-                            <p>Email: {email}</p>
-                            <p>Phone: {phone}</p>
-                        </div>
-                        <div>
-                            <p>Year: {year}</p>
-                            <p>Submission Date: {submissionTime}</p>
-                        </div>
-                    </section>
-                </div>
-                <section>
-                    <h3>Knowledge</h3>
-                    <p>{knowledge}</p>
-                    <h3>Reason for choosing the track</h3>
-                    <p>{trackReason}</p>
-                    { otherTrackInterest && 
-                        (<>
-                            <h3>Other track interested in</h3>
-                            <p>{otherTrackInterest}</p>
-                        </>)
-                    }
-                    { otherTrackInterestReason && 
-                        (<>
-                            <h3>Reason for the other track</h3>
-                            <p>{otherTrackInterestReason}</p>
-                        </>)
-                    }
-                    <h3>Previous student activities history</h3>
-                    <p>{otherStudentActivites}</p>
-                </section>
-            </div>
-        </div>
+        <Box>
+            <Paper>
+                <Box paddingY={3}>
+                    <Box component="header" paddingX={3} position="relative">
+                        <Box justifyContent={"center"} display="flex">
+                            <h2>{name}</h2>
+                        </Box>
+                        <Box justifyContent={"center"} display="flex">
+                            <h3>Track: {track}. Status: {status}</h3>
+                        </Box>
+                        <PersonControls />
+                    </Box>
+                    <div>
+                        <Box paddingX={3} marginTop={2}>
+                            <Grid container rowSpacing={1}>
+                                <Grid item component="section" xs={12} md={6}>
+                                    <p><strong>Email:</strong> {email}</p>
+                                </Grid>
+                                <Grid item component="section" xs={12} md={6}>
+                                    <p><strong>Phone:</strong> {phone}</p>
+                                </Grid>
+                                <Grid item component="section" xs={12} md={6}>
+                                    <p><strong>Year:</strong> {year}</p>
+                                </Grid>
+                                <Grid item component="section" xs={12} md={6}>
+                                    <p><strong>Submission Date:</strong> {submissionTime}</p>
+                                </Grid>
+                            </Grid>
+                        </Box>
+                        <section>
+                            { 
+                                fieldsMap.map(([title, prop]) => (
+                                    object[prop] && (
+                                        <div key={prop}>
+                                            <Box paddingY={1} paddingX={3} marginY={2} sx={{background: "linear-gradient(to bottom right, white, silver 74%)"}}>
+                                                <Typography variant='h5' component="h3" color="primary.dark">{title}</Typography>
+                                            </Box>
+                                            <Box paddingX={3}>
+                                            <p>{object[prop]}</p>
+                                            </Box>
+                                        </div>
+                                    )
+                                )
+                            )}
+                        </section>
+                    </div>
+                </Box>
+            </Paper>
+        </Box>
 
     )
 }
