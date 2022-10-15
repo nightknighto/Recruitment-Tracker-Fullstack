@@ -21,7 +21,7 @@ export default function NamesCategories({ data, selectedObj }: NamesCategoriesPr
                     categories.map( (category) => (
                         category.data.length > 0 ? 
                         (
-                            <>
+                            <Box key={category.name}>
                                 <Box sx={{marginBottom: "0.5rem", background: "linear-gradient(to bottom right, white, silver 74%)"}} paddingLeft={1}>
                                     <Typography color={category.color} variant="h4">{category.name}</Typography>
                                 </Box>
@@ -32,7 +32,7 @@ export default function NamesCategories({ data, selectedObj }: NamesCategoriesPr
                                     ))
                                 }
                                 </Box>
-                            </>
+                            </Box>
                         )
                         : null
                     ))
