@@ -59,19 +59,21 @@ export default function PersonDetails({ object }: PersonDetailsProps) {
                         </Box>
                         <section>
                             { 
-                                fieldsMap.map(([title, prop]) => (
-                                    object[prop] && (
+                                fieldsMap.map(([title, prop]) => {
+                                    {/* @ts-ignore */}
+                                    return object[prop] && (
                                         <div key={prop}>
                                             <Box paddingY={1} paddingX={3} marginY={2} sx={{background: "linear-gradient(to bottom right, white, silver 74%)"}}>
                                                 <Typography variant='h5' component="h3" color="primary.dark">{title}</Typography>
                                             </Box>
                                             <Box paddingX={3}>
+                                            {/* @ts-ignore */}
                                             <p>{object[prop]}</p>
                                             </Box>
                                         </div>
                                     )
-                                )
-                            )}
+                                })
+                            }
                         </section>
                     </div>
                 </Box>

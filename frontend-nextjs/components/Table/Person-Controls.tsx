@@ -24,7 +24,7 @@ export default function PersonControls() {
     return (
         <>
         <div className={styles.controls} onClick={toggleControls}>
-            <img src="https://picsum.photos/200" alt="controls"/>
+            {/* <img src="https://picsum.photos/200" alt="controls"/> */}
             controls
         </div>
         { open && 
