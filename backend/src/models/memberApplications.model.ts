@@ -36,11 +36,15 @@ const memberApplicationsSchema = new Schema(
       type: String,
       required: true,
     },
-    otherTrackInterst: {
+    otherTrackInterest: {
       type: String,
       required: true,
     },
-    otherStudentActivities: {
+    otherTrackInterestReason: {
+      type: String,
+      required: true,
+    },
+    otherStudentActivites: {
       type: String,
       required: true,
     },
