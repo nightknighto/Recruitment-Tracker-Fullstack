@@ -1,3 +1,4 @@
+import { User } from '@/interfaces/users.interface';
 import memberApplication from '@/models/memberApplications.model';
 
 class MemberApplicationsService {
@@ -8,10 +9,12 @@ class MemberApplicationsService {
     return memberApplications;
   }
 
-  public async updateMemberApplicationByID(updateData) {
+  public async updateMemberApplicationByID(updateData, userData: User) {
     const { _id, data } = updateData;
+    // data.editedBy = userData.email;
+    // data.editTime = new Date().toLocaleString();
     // eslint-disable-next-line prettier/prettier
-    const updateResponse = await this.memberApplications.updateOne({ '_id': _id }, data);
+    const updateResponse = await this.memberApplications.updateOne({ '_id': _id }, {$set: {...data}, $push: {edits: {editedBy: userData.name, editTime: new Date().toLocaleString()}}});
     return updateResponse;
   }
 

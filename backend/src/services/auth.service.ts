@@ -5,31 +5,31 @@ import { CreateUserDto } from '@dtos/users.dto';
 import { HttpException } from '@exceptions/HttpException';
 import { DataStoredInToken, TokenData } from '@interfaces/auth.interface';
 import { User } from '@interfaces/users.interface';
-import userModel from '@models/users.model';
 import { isEmpty } from '@utils/util';
+import recruitmentUser from '@models/users.model';
 
 class AuthService {
-  public users = userModel;
+  public users = recruitmentUser;
 
-  public async signup(userData: CreateUserDto): Promise<User> {
-    if (isEmpty(userData)) throw new HttpException(400, "userData is empty");
+  public async signup(userData: CreateUserDto) {
+    if (isEmpty(userData)) throw new HttpException(400, 'userData is empty');
 
-    const findUser: User = this.users.find(user => user.email === userData.email);
-    if (findUser) throw new HttpException(409, `This email ${userData.email} already exists`);
+    const findUser: User = Object(await this.users.findOne({ phone: userData.phone }));
+    console.log(Object.keys(findUser).length);
+    if (Object.keys(findUser).length) throw new HttpException(409, `This phone ${userData.phone} already exists`);
 
     const hashedPassword = await hash(userData.password, 10);
-    const createUserData: User = { id: this.users.length + 1, ...userData, password: hashedPassword };
-
-    return createUserData;
+    const result = await this.users.insertMany([{ name: userData.name, password: hashedPassword, phone: userData.phone, role: userData.role }]);
+    return result;
   }
 
   public async login(userData: CreateUserDto): Promise<{ cookie: string; findUser: User }> {
-    if (isEmpty(userData)) throw new HttpException(400, "userData is empty");
+    if (isEmpty(userData)) throw new HttpException(400, 'userData is empty');
 
-    const findUser: User = this.users.find(user => user.email === userData.email);
-    if (!findUser) throw new HttpException(409, `This email ${userData.email} was not found`);
-
+    const findUser: User = Object(await this.users.findOne({ phone: userData.phone }));
+    if (!findUser) throw new HttpException(409, `This phone ${userData.phone} was not found`);
     const isPasswordMatching: boolean = await compare(userData.password, findUser.password);
+    // const isPasswordMatching = userData.password === findUser.password;
     if (!isPasswordMatching) throw new HttpException(409, "You're password not matching");
 
     const tokenData = this.createToken(findUser);
@@ -38,10 +38,10 @@ class AuthService {
     return { cookie, findUser };
   }
 
-  public async logout(userData: User): Promise<User> {
-    if (isEmpty(userData)) throw new HttpException(400, "userData is empty");
+  public async logout(userData: User) {
+    if (isEmpty(userData)) throw new HttpException(400, 'userData is empty');
 
-    const findUser: User = this.users.find(user => user.email === userData.email && user.password === userData.password);
+    const findUser: User = Object(await this.users.find({ phone: userData.phone, password: userData.password }));
     if (!findUser) throw new HttpException(409, "User doesn't exist");
 
     return findUser;

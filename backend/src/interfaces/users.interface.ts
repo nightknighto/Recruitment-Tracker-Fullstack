@@ -1,5 +1,7 @@
 export interface User {
-  id: number;
-  email: string;
+  id: string;
+  name: string;
+  phone: number;
   password: string;
+  role: `admin` | `basic`;
 }

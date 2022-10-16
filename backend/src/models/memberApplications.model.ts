@@ -2,6 +2,20 @@ import mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
 
+const editSubSchema = new Schema(
+  {
+    editedBy: {
+      type: String,
+      required: true,
+    },
+    editTime: {
+      type: String,
+      required: true,
+    },
+  },
+  { _id: false },
+);
+
 const memberApplicationsSchema = new Schema(
   {
     name: {
@@ -55,6 +69,10 @@ const memberApplicationsSchema = new Schema(
     submissionTime: {
       type: String,
       required: true,
+    },
+    edits: {
+      type: [editSubSchema],
+      required: false,
     },
   },
   { timestamps: true, collection: 'RecruitmentApplications' },

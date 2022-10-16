@@ -1,60 +1,58 @@
 import { hash } from 'bcrypt';
 import { CreateUserDto } from '@dtos/users.dto';
 import { HttpException } from '@exceptions/HttpException';
-import { User } from '@interfaces/users.interface';
-import userModel from '@models/users.model';
 import { isEmpty } from '@utils/util';
+import recruitmentUser from '@models/users.model';
 
 class UserService {
-  public users = userModel;
+  public users = recruitmentUser;
 
-  public async findAllUser(): Promise<User[]> {
-    const users: User[] = this.users;
+  public async findAllUsers() {
+    const users = await this.users.find({});
     return users;
   }
 
-  public async findUserById(userId: number): Promise<User> {
-    const findUser: User = this.users.find(user => user.id === userId);
+  public async findUserById(userId: string) {
+    const findUser = await this.users.find({ _id: userId });
     if (!findUser) throw new HttpException(409, "User doesn't exist");
 
     return findUser;
   }
 
-  public async createUser(userData: CreateUserDto): Promise<User> {
-    if (isEmpty(userData)) throw new HttpException(400, "userData is empty");
+  public async createUser(userData: CreateUserDto) {
+    if (isEmpty(userData)) throw new HttpException(400, 'userData is empty');
 
-    const findUser: User = this.users.find(user => user.email === userData.email);
-    if (findUser) throw new HttpException(409, `This email ${userData.email} already exists`);
-
-    const hashedPassword = await hash(userData.password, 10);
-    const createUserData: User = { id: this.users.length + 1, ...userData, password: hashedPassword };
-    this.users = [...this.users, createUserData];
-
-    return createUserData;
-  }
-
-  public async updateUser(userId: number, userData: CreateUserDto): Promise<User[]> {
-    if (isEmpty(userData)) throw new HttpException(400, "userData is empty");
-
-    const findUser: User = this.users.find(user => user.id === userId);
-    if (!findUser) throw new HttpException(409, "User doesn't exist");
+    const findUser = await this.users.find({ phone: userData.phone });
+    if (findUser) throw new HttpException(409, `This phone ${userData.phone} already exists`);
 
     const hashedPassword = await hash(userData.password, 10);
-    const updateUserData: User[] = this.users.map((user: User) => {
-      if (user.id === findUser.id) user = { id: userId, ...userData, password: hashedPassword };
-      return user;
-    });
+    const result = await this.users.insertMany([{ name: userData.name, password: hashedPassword, phone: userData.phone, role: userData.role }]);
 
-    return updateUserData;
+    return result;
   }
 
-  public async deleteUser(userId: number): Promise<User[]> {
-    const findUser: User = this.users.find(user => user.id === userId);
-    if (!findUser) throw new HttpException(409, "User doesn't exist");
+  // public async updateUser(userId: number, userData: CreateUserDto): Promise<User[]> {
+  //   if (isEmpty(userData)) throw new HttpException(400, 'userData is empty');
 
-    const deleteUserData: User[] = this.users.filter(user => user.id !== findUser.id);
-    return deleteUserData;
-  }
+  //   const findUser: User = this.users.find(user => user.id === userId);
+  //   if (!findUser) throw new HttpException(409, "User doesn't exist");
+
+  //   const hashedPassword = await hash(userData.password, 10);
+  //   const updateUserData: User[] = this.users.map((user: User) => {
+  //     if (user.id === findUser.id) user = { id: userId, ...userData, password: hashedPassword, role: user.role };
+  //     return user;
+  //   });
+
+  //   return updateUserData;
+  // }
+
+  //   public async deleteUser(userId: number): Promise<User[]> {
+  //     const findUser: User = this.users.find(user => user.id === userId);
+  //     if (!findUser) throw new HttpException(409, "User doesn't exist");
+
+  //     const deleteUserData: User[] = this.users.filter(user => user.id !== findUser.id);
+  //     return deleteUserData;
+  //   }
 }
 
 export default UserService;
