@@ -1,8 +1,9 @@
 import axios from 'axios'
 import config from '../config'
+import authHeader from '../services/authHeader'
 
 async function getAllData() {
-    const response = await axios.get(`${config.backendUrl}/memberapplications`)
+    const response = await axios.get(`${config.backendUrl}/memberapplications`, {headers: authHeader()})
     return response.data
 }
 

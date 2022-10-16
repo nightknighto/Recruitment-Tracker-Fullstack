@@ -36,7 +36,7 @@ export default function LoginModal() {
                 phone: phoneRef.current?.value,
                 password: passwordRef.current?.value
             })
-            console.log(response.data)
+            localStorage.setItem("userToken", JSON.stringify(response.data.jwtToken.token))
             changeAuth(true);
             router.push('/')
         } catch (err) {

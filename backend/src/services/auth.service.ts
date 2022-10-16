@@ -23,7 +23,7 @@ class AuthService {
     return result;
   }
 
-  public async login(userData: CreateUserDto): Promise<{ cookie: string; findUser: User }> {
+  public async login(userData: CreateUserDto): Promise<{ cookie: string; tokenData: TokenData }> {
     if (isEmpty(userData)) throw new HttpException(400, 'userData is empty');
     if (!userData.phone || !userData.password) throw new HttpException(409, 'Invalid request body');
 
@@ -31,12 +31,12 @@ class AuthService {
     if (!Object.keys(findUser).length) throw new HttpException(409, `This phone ${userData.phone} was not found`);
     const isPasswordMatching: boolean = await compare(userData.password, findUser.password);
     // const isPasswordMatching = userData.password === findUser.password;
-    if (!isPasswordMatching) throw new HttpException(409, "You're password not matching");
+    if (!isPasswordMatching) throw new HttpException(409, 'Incorrect password');
 
     const tokenData = this.createToken(findUser);
     const cookie = this.createCookie(tokenData);
 
-    return { cookie, findUser };
+    return { cookie, tokenData };
   }
 
   public async logout(userData: User) {
