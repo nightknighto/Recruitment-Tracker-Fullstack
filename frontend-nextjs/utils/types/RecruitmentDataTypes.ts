@@ -25,4 +25,5 @@ export type TracksType =
     | "Logistics"
     | "PR"
     | "HR"
-    | "Media";
+    | "Media"
+    | "FR";
