@@ -25,9 +25,10 @@ class AuthService {
 
   public async login(userData: CreateUserDto): Promise<{ cookie: string; findUser: User }> {
     if (isEmpty(userData)) throw new HttpException(400, 'userData is empty');
+    if (!userData.phone || !userData.password) throw new HttpException(409, 'Invalid request body');
 
     const findUser: User = Object(await this.users.findOne({ phone: userData.phone }));
-    if (!findUser) throw new HttpException(409, `This phone ${userData.phone} was not found`);
+    if (!Object.keys(findUser).length) throw new HttpException(409, `This phone ${userData.phone} was not found`);
     const isPasswordMatching: boolean = await compare(userData.password, findUser.password);
     // const isPasswordMatching = userData.password === findUser.password;
     if (!isPasswordMatching) throw new HttpException(409, "You're password not matching");
