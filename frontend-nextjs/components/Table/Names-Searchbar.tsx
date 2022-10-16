@@ -13,7 +13,8 @@ const trackSearchOptions: {title: string, value: TracksType | 'all'}[] = [
     { title: "HR", value: "HR" },
     { title: "PR", value: "PR" },
     { title: "Media", value: "Media" },
-    { title: "Logistics", value: "Logistics" }
+    { title: "Logistics", value: "Logistics" },
+    { title: "FR", value: "FR" },
 ]
 
 export default function NamesSearchbar({ changeNameFilter, changeTrackFilter }: NamesSearchbarProps) {
