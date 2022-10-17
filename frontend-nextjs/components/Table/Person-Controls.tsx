@@ -25,7 +25,16 @@ export default function PersonControls() {
 
     return (
         <>
-        <Box position="absolute" right="0" top="0">
+        <Box sx={{
+            position: {
+            md: "absolute"
+            },
+            float: {
+                xs: "right",
+                md: "none"
+            }
+        }} 
+        right="0" top="0">
             <Button onClick={toggleControls}>
                 <Box display="block">
                     <SettingsIcon sx={{ fontSize: 60}} />
