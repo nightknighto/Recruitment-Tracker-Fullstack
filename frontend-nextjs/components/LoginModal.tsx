@@ -11,10 +11,12 @@ import axios from 'axios';
 import { Alert } from '@mui/material';
 import { useRouter } from 'next/router';
 import { AuthContext } from '../pages/_app';
+import LoadingIndicator from './LoadingIndicator';
 
 export default function LoginModal() {
     const [open, setOpen] = useState(false);
     const [error, setError] = useState('');
+    const [processing, setProcessing] = useState(false);
     const phoneRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
     const {changeAuth} = useContext(AuthContext)
@@ -31,6 +33,7 @@ export default function LoginModal() {
     const onSubmit: FormEventHandler<HTMLFormElement> = async (ev) => {
         ev.preventDefault();
         setError('');
+        setProcessing(true);
         try{
             const response = await axios.post(`${config.backendUrl}/login`, {
                 phone: phoneRef.current?.value,
@@ -42,6 +45,7 @@ export default function LoginModal() {
         } catch (err) {
             setError((err as any).response.data.message)
         }
+        setProcessing(false);
         
     }
 
@@ -92,9 +96,10 @@ export default function LoginModal() {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose}>Cancel</Button>
-                        <Button type='submit'>Login</Button>
+                        <Button type='submit' disabled={processing}>Login</Button>
                     </DialogActions>
                 </form>
+                <LoadingIndicator open={processing} />
             </Dialog>
         </div>
     )
