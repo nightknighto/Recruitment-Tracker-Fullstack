@@ -43,7 +43,11 @@ export default function LoginModal() {
             changeAuth(true);
             router.push('/')
         } catch (err) {
-            setError((err as any).response.data.message)
+            try{
+                setError((err as any).response.data.message)
+            } catch (err) {
+                setError("An unknown error has occurred")
+            }
         }
         setProcessing(false);
         
