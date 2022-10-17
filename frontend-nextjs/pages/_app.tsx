@@ -6,6 +6,7 @@ import {IRecruitmentData} from '../utils/types/RecruitmentDataTypes'
 import RecruitmentDataAPI from '../utils/apis/RecruitmentDataAPI'
 import { Alert, Backdrop, CircularProgress } from '@mui/material'
 import { useRouter } from 'next/router'
+import { clearStoredAuthToken, getStoredAuthToken } from '../utils/services/auth'
 
 export const DataContext = createContext<DataContextType>({data: null, changeData: () => {}})
 export const AuthContext = createContext<AuthContextType>({changeAuth: () => {}})
@@ -28,8 +29,12 @@ function MyApp({ Component, pageProps }: AppProps) {
   useEffect( () => {
     // self-invoking function
     if(!authenticated) {
-      router.push('/login')
-      return;
+      if(getStoredAuthToken()) {
+        setAuthenticated(true)
+      } else {
+        router.push('/login')
+        return;
+      }
     }
 
     (async () => {
@@ -37,7 +42,12 @@ function MyApp({ Component, pageProps }: AppProps) {
         const getData = await RecruitmentDataAPI.getAllData()
         setData(getData);
       } catch (err) {
-        setError(err as Error)
+        if(err?.response?.status === 401) {
+          setAuthenticated(false)
+          clearStoredAuthToken()
+        } else {
+          setError(err as Error)
+        }
       }
     })()
   }, [authenticated])
@@ -49,7 +59,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <meta name="viewport" content="initial-scale=1, width=device-width" />
         </Head>
         <Component {...pageProps} />
-        {/* {!data && (
+        {!data && authenticated && (
             <Backdrop
             sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
             open
@@ -59,7 +69,7 @@ function MyApp({ Component, pageProps }: AppProps) {
               : <CircularProgress color="inherit" />
             }
           </Backdrop>
-        )} */}
+        )}
       </AuthContext.Provider>
     </DataContext.Provider>
   )
