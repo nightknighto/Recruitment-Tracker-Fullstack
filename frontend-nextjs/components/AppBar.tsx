@@ -103,7 +103,6 @@ const AppBar = () => {
           <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
           <Typography
             variant="h5"
-            noWrap
             component="a"
             href=""
             sx={{
@@ -112,7 +111,7 @@ const AppBar = () => {
               flexGrow: 1,
               fontFamily: 'monospace',
               fontWeight: 700,
-              letterSpacing: '.3rem',
+              letterSpacing: 'min(.3rem, 0.5vw)',
               color: 'inherit',
               textDecoration: 'none',
             }}
