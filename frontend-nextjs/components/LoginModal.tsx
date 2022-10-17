@@ -12,6 +12,7 @@ import { Alert } from '@mui/material';
 import { useRouter } from 'next/router';
 import { AuthContext } from '../pages/_app';
 import LoadingIndicator from './LoadingIndicator';
+import { storeAuthToken } from '../utils/services/auth';
 
 export default function LoginModal() {
     const [open, setOpen] = useState(false);
@@ -39,7 +40,7 @@ export default function LoginModal() {
                 phone: phoneRef.current?.value,
                 password: passwordRef.current?.value
             })
-            localStorage.setItem("userToken", JSON.stringify(response.data.jwtToken.token))
+            storeAuthToken(response.data.jwtToken.token)
             changeAuth(true);
             router.push('/')
         } catch (err) {
