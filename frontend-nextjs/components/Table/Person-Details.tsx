@@ -35,8 +35,13 @@ export default function PersonDetails({ object }: PersonDetailsProps) {
                         <Box justifyContent={"center"} display="flex">
                             <h2>{name}</h2>
                         </Box>
-                        <Box justifyContent={"center"} display="flex">
-                            <h3>Track: {track}. Status: {status}</h3>
+                        <Box justifyContent={"space-around"} display="flex">
+                            <Box>
+                                <h3>Track: <Typography color="secondary" variant="h6" component="span">{track}</Typography></h3>
+                            </Box>
+                            <Box>
+                                <h3>Status: <Typography color="secondary" variant="h6" component="span">{status}</Typography></h3>
+                            </Box>
                         </Box>
                         <PersonControls />
                     </Box>
