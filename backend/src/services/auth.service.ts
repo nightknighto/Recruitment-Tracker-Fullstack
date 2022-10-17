@@ -23,7 +23,7 @@ class AuthService {
     return result;
   }
 
-  public async login(userData: CreateUserDto): Promise<{ cookie: string; tokenData: TokenData }> {
+  public async login(userData: CreateUserDto): Promise<{ cookie: string; tokenData: TokenData; findUser: User }> {
     if (isEmpty(userData)) throw new HttpException(400, 'userData is empty');
     if (!userData.phone || !userData.password) throw new HttpException(409, 'Invalid request body');
 
@@ -36,7 +36,7 @@ class AuthService {
     const tokenData = this.createToken(findUser);
     const cookie = this.createCookie(tokenData);
 
-    return { cookie, tokenData };
+    return { cookie, tokenData, findUser };
   }
 
   public async logout(userData: User) {
