@@ -1,7 +1,7 @@
 export type IRecruitmentData = {
     _id: string;
     name: string;
-    status: "pending" | "accepted" | "rejected";
+    status: StatusType;
     submissionTime: string;
     collegeID: number;
     phone: number;
@@ -14,6 +14,9 @@ export type IRecruitmentData = {
     otherTrackInterestReason?: string;
     otherStudentActivites: string;
 };
+
+export const statuses = ["pending", "emailed", "scheduled", "interviewed", "accepted", "rejected", "filtered"] as const;
+export type StatusType = typeof statuses[number];
 
 export type TracksType =
     | "(AC) Embedded Systems"

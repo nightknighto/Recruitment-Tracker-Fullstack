@@ -1,5 +1,6 @@
 import { Box, Grid, Paper, Typography } from '@mui/material';
 import Image from 'next/image';
+import capitalizeFirstLetter from '../../utils/services/capitalizeFirstLetter';
 import {IRecruitmentData} from '../../utils/types/RecruitmentDataTypes'
 import PersonControls from './Person-Controls';
 
@@ -40,10 +41,10 @@ export default function PersonDetails({ object }: PersonDetailsProps) {
                                 <h3>Track: <Typography color="secondary" variant="h6" component="span">{track}</Typography></h3>
                             </Box>
                             <Box>
-                                <h3>Status: <Typography color="secondary" variant="h6" component="span">{status}</Typography></h3>
+                                <h3>Status: <Typography color="secondary" variant="h6" component="span">{capitalizeFirstLetter(status)}</Typography></h3>
                             </Box>
                         </Box>
-                        <PersonControls />
+                        <PersonControls status={status} />
                     </Box>
                     <div>
                         <Box paddingX={3} marginTop={2}>
