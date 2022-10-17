@@ -1,27 +1,21 @@
 import React, { MouseEventHandler, useEffect, useState } from 'react'
 import styles from '../../styles/PersonControls.module.css'
 import SettingsIcon from '@mui/icons-material/Settings';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Menu, Typography } from '@mui/material';
+import MenuItem from '@mui/material/MenuItem'
+import { statuses, StatusType } from '../../utils/types/RecruitmentDataTypes';
+import capitalizeFirstLetter from '../../utils/services/capitalizeFirstLetter';
 
-export default function PersonControls() {
-    const [open, setOpen] = useState(false)
-
-    useEffect( () => {
-        document.body.style.overflow = open? "hidden" : "auto"
-    }, [open])
-
-    function toggleControls() {
-        setOpen(!open)
-    }
-    
-    function closeModal() {
-        setOpen(false)
-    }
-
-    const innerModalPreventPropagation: MouseEventHandler = (e) => {
-        e.stopPropagation()
-    }
-
+export default function PersonControls({ status }: PersonControlsProps) {
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+      setAnchorEl(event.currentTarget);
+    };
+  
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
 
     return (
         <>
@@ -35,7 +29,13 @@ export default function PersonControls() {
             }
         }} 
         right="0" top="0">
-            <Button onClick={toggleControls}>
+            <Button
+                id="basic-button"
+                aria-controls={open ? 'basic-menu' : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? 'true' : undefined}
+                onClick={handleClick}
+            >
                 <Box display="block">
                     <SettingsIcon sx={{ fontSize: 60}} />
                     <Box marginTop={-1} display="block">
@@ -45,19 +45,37 @@ export default function PersonControls() {
                     </Box>
                 </Box>
             </Button>
-        </Box>
-        { open && 
-            <div className={styles.modalBackground} onClick={closeModal}>
-                <div className={styles.modal} onClick={innerModalPreventPropagation}>
+            <Menu
+                id="lock-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                MenuListProps={{
+                'aria-labelledby': 'lock-button',
+                role: 'listbox',
+                }}
+            >
+                <MenuItem
+                    disabled
+                >
                     Status
-                    <select defaultValue="">
-                        <option value="accepted">Accepted</option>
-                        <option value="pending">Pending</option>
-                        <option value="rejected">Rejected</option>
-                    </select>
-                </div>
-            </div>
-        }
+                </MenuItem>
+                {statuses.map((newStatus) => (
+                <MenuItem
+                    key={newStatus}
+                    value={newStatus}
+                    selected={newStatus === status}
+                    sx={newStatus === status? { color: "primary.dark" } : {}}
+                >
+                    {capitalizeFirstLetter(newStatus)}
+                </MenuItem>
+                ))}
+            </Menu>
+        </Box>
         </>
     )
+}
+
+interface PersonControlsProps {
+    status: StatusType
 }
