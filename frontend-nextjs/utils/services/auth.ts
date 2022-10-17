@@ -9,13 +9,27 @@ export function authHeader() {
 }
 
 export function getStoredAuthToken() {
-  return localStorage.getItem('userToken') ? JSON.parse(localStorage.getItem('userToken')!) : undefined;
+  return localStorage.getItem('user') ? (JSON.parse(localStorage.getItem('user')!) as userObject).userToken : null;
 }
 
-export function storeAuthToken(token: string) {
-  localStorage.setItem('userToken', JSON.stringify(token));
+export function storeUserData(obj: userObject) {
+  localStorage.setItem('user', JSON.stringify(obj));
 }
 
-export function clearStoredAuthToken() {
-  localStorage.removeItem('userToken');
+export function clearUserData() {
+  localStorage.removeItem('user');
+}
+
+export function getUserName() {
+  return localStorage.getItem('user') ? (JSON.parse(localStorage.getItem('user')!) as userObject).name : null;
+}
+
+export function getUserRole() {
+  return localStorage.getItem('user') ? (JSON.parse(localStorage.getItem('user')!) as userObject).role : null;
+}
+
+interface userObject {
+  userToken: string;
+  name: string;
+  role: 'basic' | 'admin';
 }

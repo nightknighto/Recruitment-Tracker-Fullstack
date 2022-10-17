@@ -11,7 +11,7 @@ import axios from 'axios';
 import { Alert } from '@mui/material';
 import { useRouter } from 'next/router';
 import { AuthContext } from '../pages/_app';
-import { storeAuthToken } from '../utils/services/auth';
+import { storeUserData } from '../utils/services/auth';
 import LoadingIndicator from '../components/LoadingIndicator';
 
 export default function Login() {
@@ -31,7 +31,8 @@ export default function Login() {
                 phone: phoneRef.current?.value,
                 password: passwordRef.current?.value
             })
-            storeAuthToken(response.data.jwtToken.token)
+            const {jwtToken, name, role} = response.data;
+            storeUserData({ userToken: jwtToken.token, name, role })
             changeAuth(true);
             router.push('/')
         } catch (err) {

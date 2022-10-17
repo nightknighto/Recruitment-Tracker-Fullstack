@@ -6,7 +6,7 @@ import {IRecruitmentData} from '../utils/types/RecruitmentDataTypes'
 import RecruitmentDataAPI from '../utils/apis/RecruitmentDataAPI'
 import { Alert, Backdrop, CircularProgress } from '@mui/material'
 import { useRouter } from 'next/router'
-import { clearStoredAuthToken, getStoredAuthToken } from '../utils/services/auth'
+import { clearUserData, getStoredAuthToken } from '../utils/services/auth'
 
 export const DataContext = createContext<DataContextType>({data: null, changeData: () => {}})
 export const AuthContext = createContext<AuthContextType>({changeAuth: () => {}})
@@ -44,7 +44,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       } catch (err) {
         if(err?.response?.status === 401) {
           setAuthenticated(false)
-          clearStoredAuthToken()
+          clearUserData()
         } else {
           setError(err as Error)
         }
