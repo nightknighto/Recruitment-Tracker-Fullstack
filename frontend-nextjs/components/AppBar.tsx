@@ -13,17 +13,18 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import Link from 'next/link';
-import { getUserName } from '../utils/services/auth';
+import { getUserName, useLogout } from '../utils/services/auth';
 
 const pages = [{title: 'Table', href: '/table'}];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+// const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const AppBar = () => {
+  const [logout] = useLogout()
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
   const username = getUserName() || '';
-
+  
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -39,6 +40,12 @@ const AppBar = () => {
     setAnchorElUser(null);
   };
 
+  const handleLogout = () => {
+    handleCloseUserMenu();
+    logout();
+  }
+  const settings = [{name: 'Logout', func: handleLogout}];
+  
   return (
     <AppbarComponent position="static">
       <Container maxWidth="xl">
@@ -161,9 +168,9 @@ const AppBar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+              {settings.map(({ name, func }) => (
+                <MenuItem key={name} onClick={func}>
+                  <Typography textAlign="center">{name}</Typography>
                 </MenuItem>
               ))}
             </Menu>
