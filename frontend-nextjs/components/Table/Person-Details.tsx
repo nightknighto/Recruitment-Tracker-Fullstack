@@ -1,7 +1,11 @@
 import { Box, Grid, Paper, Typography } from '@mui/material';
+import axios from 'axios';
 import Image from 'next/image';
+import { useContext } from 'react';
+import { DataContext } from '../../pages/_app';
+import RecruitmentDataAPI from '../../utils/apis/RecruitmentDataAPI';
 import capitalizeFirstLetter from '../../utils/services/capitalizeFirstLetter';
-import {IRecruitmentData} from '../../utils/types/RecruitmentDataTypes'
+import {IRecruitmentData, StatusType} from '../../utils/types/RecruitmentDataTypes'
 import PersonControls from './Person-Controls';
 
 // fieldsMap: [displayed title, property name]
@@ -14,6 +18,27 @@ const fieldsMap: [string, string][] = [
 ]
 
 export default function PersonDetails({ object }: PersonDetailsProps) {
+    const { data, changeData } = useContext(DataContext)
+
+    const handleStatusChange = (newStatus: StatusType) => {
+        if(!data || !object) return;
+
+        try{
+            RecruitmentDataAPI.setStatus(object._id, newStatus)
+
+            const newData = [...data]
+            const item = newData.find((item) => item._id === object._id)
+    
+            if(item) {
+                item.status = newStatus
+                changeData(newData)
+            }
+        } catch (e) {
+            console.log(e)
+        }
+
+
+    }
 
     if(!object) return null;
 
@@ -44,7 +69,7 @@ export default function PersonDetails({ object }: PersonDetailsProps) {
                                 <h3>Status: <Typography color="secondary" variant="h6" component="span">{capitalizeFirstLetter(status)}</Typography></h3>
                             </Box>
                         </Box>
-                        <PersonControls status={status} />
+                        <PersonControls status={status} handleChange={handleStatusChange} />
                     </Box>
                     <div>
                         <Box paddingX={3} marginTop={2}>
