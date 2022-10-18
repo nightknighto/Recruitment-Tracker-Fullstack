@@ -1,3 +1,6 @@
+import { useContext } from "react";
+import { AuthContext } from "../../pages/_app";
+
 export function authHeader() {
   const userToken = getStoredAuthToken();
 
@@ -26,6 +29,15 @@ export function getUserName() {
 
 export function getUserRole() {
   return localStorage.getItem('user') ? (JSON.parse(localStorage.getItem('user')!) as userObject).role : null;
+}
+
+export function useLogout() {
+  const { changeAuth } = useContext(AuthContext)
+  const func = () => {
+    clearUserData();
+    changeAuth(false);
+  }
+  return [func];
 }
 
 interface userObject {
