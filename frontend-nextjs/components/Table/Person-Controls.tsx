@@ -5,10 +5,13 @@ import { Box, Button, Menu, Typography } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem'
 import { statuses, StatusType } from '../../utils/types/RecruitmentDataTypes';
 import capitalizeFirstLetter from '../../utils/services/capitalizeFirstLetter';
+import { getUserRole } from '../../utils/services/auth';
 
 export default function PersonControls({ status }: PersonControlsProps) {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
+    const role = getUserRole() || 'basic';
+
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
       setAnchorEl(event.currentTarget);
     };
@@ -35,6 +38,7 @@ export default function PersonControls({ status }: PersonControlsProps) {
                 aria-haspopup="true"
                 aria-expanded={open ? 'true' : undefined}
                 onClick={handleClick}
+                disabled={role === 'basic'}
             >
                 <Box display="block">
                     <SettingsIcon sx={{ fontSize: 60}} />
