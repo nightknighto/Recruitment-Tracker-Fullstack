@@ -5,13 +5,21 @@ import NamesItem from './Names-item'
 export default function NamesCategories({ data, selectedObj }: NamesCategoriesProps) {
 
     const pendingApps = data.filter( app => app.status === "pending")
+    const emailedApps = data.filter( app => app.status === "emailed")
+    const scheduledApps = data.filter( app => app.status === "scheduled")
+    const interviewedApps = data.filter( app => app.status === "interviewed")
     const acceptedApps = data.filter( app => app.status === "accepted")
     const rejectedApps = data.filter( app => app.status === "rejected")
+    const filteredApps = data.filter( app => app.status === "filtered")
 
     const categories = [
         {name: "Pending", data: pendingApps, color: "primary"},
-        {name: "Accepted", data: acceptedApps, color: "secondary"},
-        {name: "Rejected", data: rejectedApps, color: "error"}
+        {name: "Emailed", data: emailedApps, color: "secondary"},
+        {name: "Scheduled", data: scheduledApps, color: "secondary"},
+        {name: "Interviewed", data: interviewedApps, color: "green"},
+        {name: "Accepted", data: acceptedApps, color: "green"},
+        {name: "Rejected", data: rejectedApps, color: "error"},
+        {name: "Filtered", data: filteredApps, color: "error"}
     ]
 
     return (

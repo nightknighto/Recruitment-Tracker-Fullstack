@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, useEffect, useState } from 'react'
+import React, { MouseEventHandler, useContext, useEffect, useState } from 'react'
 import styles from '../../styles/PersonControls.module.css'
 import SettingsIcon from '@mui/icons-material/Settings';
 import { Box, Button, Menu, Typography } from '@mui/material';
@@ -6,8 +6,9 @@ import MenuItem from '@mui/material/MenuItem'
 import { statuses, StatusType } from '../../utils/types/RecruitmentDataTypes';
 import capitalizeFirstLetter from '../../utils/services/capitalizeFirstLetter';
 import { getUserRole } from '../../utils/services/auth';
+import { DataContext } from '../../pages/_app';
 
-export default function PersonControls({ status }: PersonControlsProps) {
+export default function PersonControls({ status, handleChange }: PersonControlsProps) {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const role = getUserRole() || 'basic';
@@ -19,6 +20,11 @@ export default function PersonControls({ status }: PersonControlsProps) {
     const handleClose = () => {
       setAnchorEl(null);
     };
+
+    const handleStatusChange = (newStatus: StatusType) => {
+        handleChange(newStatus);
+        handleClose();
+    }
 
     return (
         <>
@@ -70,6 +76,7 @@ export default function PersonControls({ status }: PersonControlsProps) {
                     value={newStatus}
                     selected={newStatus === status}
                     sx={newStatus === status? { color: "primary.dark" } : {}}
+                    onClick={() => handleStatusChange(newStatus)}
                 >
                     {capitalizeFirstLetter(newStatus)}
                 </MenuItem>
@@ -82,4 +89,5 @@ export default function PersonControls({ status }: PersonControlsProps) {
 
 interface PersonControlsProps {
     status: StatusType
+    handleChange: (newStatus: StatusType) => void
 }
