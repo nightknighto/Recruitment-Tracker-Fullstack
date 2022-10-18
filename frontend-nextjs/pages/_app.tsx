@@ -7,6 +7,7 @@ import RecruitmentDataAPI from '../utils/apis/RecruitmentDataAPI'
 import { Alert, Backdrop, CircularProgress } from '@mui/material'
 import { useRouter } from 'next/router'
 import { clearUserData, getStoredAuthToken } from '../utils/services/auth'
+import { AxiosError } from 'axios'
 
 export const DataContext = createContext<DataContextType>({data: null, changeData: () => {}})
 export const AuthContext = createContext<AuthContextType>({changeAuth: () => {}})
@@ -41,7 +42,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       try{
         const getData = await RecruitmentDataAPI.getAllData()
         setData(getData);
-      } catch (err) {
+      } catch (err: any) {
         if(err?.response?.status === 401) {
           setAuthenticated(false)
           clearUserData()
