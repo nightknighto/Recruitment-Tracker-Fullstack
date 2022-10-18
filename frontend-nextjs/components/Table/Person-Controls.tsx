@@ -11,7 +11,11 @@ import { DataContext } from '../../pages/_app';
 export default function PersonControls({ status, handleChange }: PersonControlsProps) {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
-    const role = getUserRole() || 'basic';
+    const [role, setRole] = useState<string>('basic')
+
+    useEffect( () => {
+        setRole(getUserRole() || 'basic')
+    }, [])
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
       setAnchorEl(event.currentTarget);
