@@ -18,6 +18,22 @@ class MemberApplicationsService {
     return updateResponse;
   }
 
+  public async updateMultipleMemberApplicationsByID(updateData, userData: User) {
+    const bulkWrites = updateData.multi.map(obj => {
+      return {
+        updateOne: {
+          filter: {
+            _id: obj._id,
+          },
+          update: { $set: { ...obj.data }, $push: { edits: { editedBy: userData.name, editTime: new Date().toLocaleString() } } },
+        },
+      };
+    });
+    const multiUpdate = await this.memberApplications.bulkWrite(bulkWrites);
+    // const updateResponse = await this.memberApplications.updateOne({ '_id': _id }, {$set: {...data}, $push: {edits: {editedBy: userData.name, editTime: new Date().toLocaleString()}}});
+    return multiUpdate;
+  }
+
   //     public async findUserById(userId: number): Promise<User> {
   //       const findUser: User = this.users.find(user => user.id === userId);
   //       if (!findUser) throw new HttpException(409, "User doesn't exist");

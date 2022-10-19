@@ -15,7 +15,7 @@ class AuthService {
     if (isEmpty(userData)) throw new HttpException(400, 'userData is empty');
 
     const findUser: User = Object(await this.users.findOne({ phone: userData.phone }));
-    console.log(Object.keys(findUser).length);
+
     if (Object.keys(findUser).length) throw new HttpException(409, `This phone ${userData.phone} already exists`);
 
     const hashedPassword = await hash(userData.password, 10);

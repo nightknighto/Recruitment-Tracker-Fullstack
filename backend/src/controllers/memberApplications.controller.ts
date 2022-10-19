@@ -29,6 +29,17 @@ class MemberApplicationsController {
     }
   };
 
+  public updateMultipleMemberApplicationsByID = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const updateData = req.body;
+      const userData: User = req.user;
+      const updateResponse = await this.memberApplicationsService.updateMultipleMemberApplicationsByID(updateData, userData);
+      res.status(200).json(updateResponse);
+    } catch (error) {
+      next(error);
+    }
+  };
+
   // public createUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   //   try {
   //     const userData: CreateUserDto = req.body;
