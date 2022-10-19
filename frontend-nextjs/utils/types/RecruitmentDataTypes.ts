@@ -32,10 +32,10 @@ export const statusesTooltips = [
     "An interview has been scheduled",
     "Interviewed and is recommended to be accepted",
     "Interviewed but on hold, to see if there are better candidates",
-    "Interviewed and accepted",
-    "Interviewed and rejected",
+    "Final Acceptance",
+    "Final Rejection",
     "Transferred to second preference",
-    "Filtered out and is now on the waiting list, in case we need more people",
+    "Filtered out from the form and is now on the waiting list, in case we need more people",
 ];
 export type StatusType = typeof statuses[number];
 
