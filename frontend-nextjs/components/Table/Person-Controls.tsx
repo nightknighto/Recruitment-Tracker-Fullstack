@@ -1,9 +1,9 @@
 import React, { MouseEventHandler, useContext, useEffect, useState } from 'react'
 import styles from '../../styles/PersonControls.module.css'
 import SettingsIcon from '@mui/icons-material/Settings';
-import { Box, Button, Menu, Typography } from '@mui/material';
+import { Box, Button, Menu, Tooltip, Typography } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem'
-import { statuses, StatusType } from '../../utils/types/RecruitmentDataTypes';
+import { statuses, statusesTooltips, StatusType } from '../../utils/types/RecruitmentDataTypes';
 import capitalizeFirstLetter from '../../utils/services/capitalizeFirstLetter';
 import { getUserRole } from '../../utils/services/auth';
 import { DataContext } from '../../pages/_app';
@@ -74,16 +74,17 @@ export default function PersonControls({ status, handleChange }: PersonControlsP
                 >
                     Status
                 </MenuItem>
-                {statuses.map((newStatus) => (
-                <MenuItem
-                    key={newStatus}
-                    value={newStatus}
-                    selected={newStatus === status}
-                    sx={newStatus === status? { color: "primary.dark" } : {}}
-                    onClick={() => handleStatusChange(newStatus)}
-                >
-                    {capitalizeFirstLetter(newStatus)}
-                </MenuItem>
+                {statuses.map((newStatus, index) => (
+                <Tooltip title={statusesTooltips[index]} key={newStatus} placement="left" arrow>
+                    <MenuItem
+                        value={newStatus}
+                        selected={newStatus === status}
+                        sx={newStatus === status? { color: "primary.dark" } : {}}
+                        onClick={() => handleStatusChange(newStatus)}
+                    >
+                        {capitalizeFirstLetter(newStatus)}
+                    </MenuItem>
+                </Tooltip>
                 ))}
             </Menu>
         </Box>
