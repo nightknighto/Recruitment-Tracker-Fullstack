@@ -13,7 +13,6 @@ export default function NamesCategories({ data, selectedObj }: NamesCategoriesPr
     const rejectedApps = data.filter( app => app.status === "rejected")
     const secondprefApps = data.filter( app => app.status === "second pref")
     const filteredApps = data.filter( app => app.status === "filtered")
-    const otherApps = data.filter( app => app.status === "other")
 
     const categories = [
         {name: "Pending", data: pendingApps, color: "primary"},
@@ -24,8 +23,7 @@ export default function NamesCategories({ data, selectedObj }: NamesCategoriesPr
         {name: "Accepted", data: acceptedApps, color: "green"},
         {name: "Rejected", data: rejectedApps, color: "error"},
         {name: "Filtered", data: filteredApps, color: "error"},
-        {name: "Second Pref", data: secondprefApps, color: "primary"},
-        {name: "Other", data: otherApps, color: "primary"}
+        {name: "Second Pref", data: secondprefApps, color: "primary"}
     ]
 
     return (
