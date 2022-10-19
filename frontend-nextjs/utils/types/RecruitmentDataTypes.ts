@@ -15,7 +15,28 @@ export type IRecruitmentData = {
     otherStudentActivites: string;
 };
 
-export const statuses = ["pending", "emailed", "scheduled", "interviewed", "accepted", "rejected", "filtered"] as const;
+export const statuses = [
+    "pending",
+    "emailed",
+    "scheduled",
+    "recommended",
+    "on hold",
+    "accepted",
+    "rejected",
+    "second pref",
+    "filtered",
+] as const;
+export const statusesTooltips = [
+    "Haven't been looked at yet",
+    "An email has been sent and waiting for response",
+    "An interview has been scheduled",
+    "Interviewed and is recommended to be accepted",
+    "Interviewed but on hold, to see if there are better candidates",
+    "Interviewed and accepted",
+    "Interviewed and rejected",
+    "Transferred to second preference",
+    "Filtered out and is now on the waiting list, in case we need more people",
+];
 export type StatusType = typeof statuses[number];
 
 export type TracksType =
