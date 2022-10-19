@@ -15,6 +15,7 @@ class MemberApplicationsRoute implements Routes {
   private initializeRoutes() {
     this.router.get(`${this.path}`, authMiddleware, this.memberApplicationsController.getMemberApplications);
     this.router.put(`${this.path}`, authIsAdmin, this.memberApplicationsController.updateMemberApplicationByID);
+    this.router.put(`${this.path}/multi`, authIsAdmin, this.memberApplicationsController.updateMultipleMemberApplicationsByID);
     // this.router.post(`${this.path}`, validationMiddleware(CreateUserDto, 'body'), this.usersController.createUser);
     // this.router.delete(`${this.path}/:id(\\d+)`, this.usersController.deleteUser);
   }
