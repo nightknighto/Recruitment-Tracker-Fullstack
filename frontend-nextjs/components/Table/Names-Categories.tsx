@@ -7,18 +7,22 @@ export default function NamesCategories({ data, selectedObj }: NamesCategoriesPr
     const pendingApps = data.filter( app => app.status === "pending")
     const emailedApps = data.filter( app => app.status === "emailed")
     const scheduledApps = data.filter( app => app.status === "scheduled")
-    const interviewedApps = data.filter( app => app.status === "interviewed")
+    const recommendedApps = data.filter( app => app.status === "recommended")
+    const onholdApps = data.filter( app => app.status === "on hold")
     const acceptedApps = data.filter( app => app.status === "accepted")
     const rejectedApps = data.filter( app => app.status === "rejected")
+    const secondprefApps = data.filter( app => app.status === "second pref")
     const filteredApps = data.filter( app => app.status === "filtered")
 
     const categories = [
         {name: "Pending", data: pendingApps, color: "primary"},
         {name: "Emailed", data: emailedApps, color: "secondary"},
         {name: "Scheduled", data: scheduledApps, color: "secondary"},
-        {name: "Interviewed", data: interviewedApps, color: "green"},
+        {name: "Recommended", data: recommendedApps, color: "green"},
+        {name: "On Hold", data: onholdApps, color: "green"},
         {name: "Accepted", data: acceptedApps, color: "green"},
         {name: "Rejected", data: rejectedApps, color: "error"},
+        {name: "Second Pref", data: secondprefApps, color: "error"},
         {name: "Filtered", data: filteredApps, color: "error"}
     ]
 
