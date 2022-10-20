@@ -8,8 +8,6 @@ class MemberApplicationsController {
 
   public getMemberApplications = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const userData: User = req.user;
-      console.log(userData);
       // const findAllUsersData: User[] = await this.userService.findAllUser();
       const memberApplications = await this.memberApplicationsService.findAllMemberApplications();
       res.status(200).json(memberApplications);
@@ -22,6 +20,7 @@ class MemberApplicationsController {
     try {
       const updateData = req.body;
       const userData: User = req.user;
+      console.log('Update: ', userData.name);
       const updateResponse = await this.memberApplicationsService.updateMemberApplicationByID(updateData, userData);
       res.status(200).json(updateResponse);
     } catch (error) {
@@ -33,6 +32,7 @@ class MemberApplicationsController {
     try {
       const updateData = req.body;
       const userData: User = req.user;
+      console.log('Update: ', userData.name);
       const updateResponse = await this.memberApplicationsService.updateMultipleMemberApplicationsByID(updateData, userData);
       res.status(200).json(updateResponse);
     } catch (error) {
