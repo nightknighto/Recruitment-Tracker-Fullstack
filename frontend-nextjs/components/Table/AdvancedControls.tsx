@@ -48,7 +48,7 @@ export default function AdvancedControls() {
 
     return (
         <div>
-            <Typography component="h3" variant="h5" color="primary">Advanced</Typography>
+            <Typography component="h3" variant="h5" color="primary.dark">Advanced</Typography>
             <Box paddingTop={2}>
                 <Tooltip title="Quickly sets multiple people from Pending to Emailed status." arrow>
                     <span>
