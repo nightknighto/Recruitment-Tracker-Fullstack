@@ -18,7 +18,7 @@ export default function AdvancedControls() {
     const [massEmailsOpen, setMassEmailsOpen] = useState<boolean>(false)
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
     const [role, setRole] = useState<string>('basic')
-    const { data } = useContext(DataContext)
+    const { data, changeData } = useContext(DataContext)
 
     useEffect( () => {
         setRole(getUserRole() || 'basic')
@@ -43,6 +43,18 @@ export default function AdvancedControls() {
         // TODO: add error handler
 
         RecruitmentDataAPI.setMultipleStatuses(matchedIds, 'emailed')
+
+        const newData = [...data]
+        matchedIds.forEach(_id => {
+            const item = newData.find((item) => item._id === _id)
+
+            if(item) {
+                item.status = 'emailed'
+            }
+        })
+        changeData(newData)
+
+        handleMassEmailsClose()
 
     }
 
