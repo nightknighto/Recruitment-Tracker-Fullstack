@@ -19,9 +19,25 @@ async function setStatus(id: string, status: StatusType) {
     return response.data
 }
 
+async function setMultipleStatuses(ids: string[], status: StatusType) {
+    const dataArray = ids.map(id => ({
+        "_id": id,
+        "data": {
+            "status": status
+        }
+    }))
+
+    const payload = {
+        "multi": dataArray
+    }
+    const response = await axios.put(`${config.backendUrl}/memberapplications/multi`, payload, {headers: authHeader()})
+    return response.data
+}
+
 const RecruitmentDataAPI = {
     getAllData,
-    setStatus
+    setStatus,
+    setMultipleStatuses
 }
 
 export default RecruitmentDataAPI

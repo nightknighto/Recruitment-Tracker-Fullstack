@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import Layout from '../../components/Layout'
-import NamesAdd from '../../components/Table/Names-Add'
+import AdvancedControls from '../../components/Table/AdvancedControls'
 import NamesCategories from '../../components/Table/Names-Categories'
 import NamesSearchbar from '../../components/Table/Names-Searchbar'
 import PersonDetails from '../../components/Table/Person-Details'
@@ -63,8 +63,8 @@ export default function Table() {
                                             <NamesSearchbar changeNameFilter={changeNameFilter} changeTrackFilter={changeTrackFilter} />
                                         </Box>
                                         <NamesCategories data={filteredData} selectedObj={selectedObj}/>
-                                        <Box padding={2} marginBottom={2} borderBottom="1px solid grey">
-                                            <NamesAdd />  
+                                        <Box padding={2} paddingTop={0} marginBottom={2} borderBottom="1px solid grey">
+                                            <AdvancedControls />  
                                         </Box>
                                     </Box>
                                 </Paper>    
