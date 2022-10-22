@@ -8,6 +8,7 @@ import { Alert, Backdrop, CircularProgress } from '@mui/material'
 import { useRouter } from 'next/router'
 import { clearUserData, getStoredAuthToken } from '../utils/services/auth'
 import { AxiosError } from 'axios'
+import LoadingIndicator from '../components/LoadingIndicator'
 
 export const DataContext = createContext<DataContextType>({data: null, changeData: () => {}})
 export const AuthContext = createContext<AuthContextType>({changeAuth: () => {}})
@@ -61,15 +62,18 @@ function MyApp({ Component, pageProps }: AppProps) {
         </Head>
         <Component {...pageProps} />
         {!data && authenticated && (
+          <>
+          {error? 
             <Backdrop
-            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-            open
-          >
-            {error? 
+              sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+              open
+            >
               <Alert severity="error">A server error has occurred: {error.message}</Alert>
-              : <CircularProgress color="inherit" />
-            }
-          </Backdrop>
+            </Backdrop>
+            :
+            <LoadingIndicator open={true} />
+          }
+          </>
         )}
       </AuthContext.Provider>
     </DataContext.Provider>
