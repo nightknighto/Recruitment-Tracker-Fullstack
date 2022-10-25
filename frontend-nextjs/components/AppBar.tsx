@@ -115,10 +115,11 @@ const AppBar = () => {
           </Box>
           
           <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+          <Link href="/" passHref>
           <Typography
             variant="h5"
             component="a"
-            href=""
+            href="/"
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
@@ -132,6 +133,7 @@ const AppBar = () => {
           >
             Recruitment Tracker
           </Typography>
+          </Link>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map(({ title, href }) => (
               <Link key={title} href={href} passHref>
