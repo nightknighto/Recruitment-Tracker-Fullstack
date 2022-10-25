@@ -37,11 +37,12 @@ export default function AdvancedControls() {
         if(!data || !textAreaRef.current) return;
 
         const emails = textAreaRef.current.value.split('\n').map(email => email.trim())
-        const matchedEmails = emails.filter(email => data.find(person => person.email.toLowerCase() === email.toLowerCase() && person.status === 'pending'))
-        const matchedIds = matchedEmails.map(email => data.find(person => person.email.toLowerCase() === email.toLowerCase())?._id || '')
+        const matchedEmails = emails.filter(email => data.find(person => person.email.toLowerCase().trim() === email.toLowerCase() && person.status === 'pending'))
+        const matchedIds = matchedEmails.map(email => data.find(person => person.email.toLowerCase().trim() === email.toLowerCase())?._id || '')
         // TODO: give feedback about the number of matched emails
         // TODO: add error handler
 
+        // console.log(matchedIds)
         RecruitmentDataAPI.setMultipleStatuses(matchedIds, 'emailed')
 
         const newData = [...data]
