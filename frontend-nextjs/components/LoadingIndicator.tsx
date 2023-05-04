@@ -26,7 +26,7 @@ export default function LoadingIndicator({ open }: LoadingIndicatorProps) {
                 </Box>
                 {displayMsg && (
                     <Box>
-                        <Alert severity="info">Hold tight, the server is waking up. This can take up to 30 seconds</Alert>
+                        <Alert severity="info">Hold tight, the server is waking up. This can take up to 2 minutes.</Alert>
                     </Box>
                 )}
             </Box>
