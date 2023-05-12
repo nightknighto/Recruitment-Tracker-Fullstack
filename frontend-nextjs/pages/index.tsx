@@ -73,7 +73,7 @@ const Home: NextPage = () => {
 
   }, [APIdata])
 
-  // Effect to get the data for the *first preference* doughnut chart
+  // Effect to get the data for the *second preference* doughnut chart
   useEffect( () => {
     if(!APIdata) return;
 
