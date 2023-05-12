@@ -2,7 +2,7 @@ import { AccessAlarm, Home as Hm } from '@mui/icons-material'
 import { Box, Button, Card, Container, Grid, Paper, Typography } from '@mui/material'
 import type { NextPage } from 'next'
 import { Doughnut } from 'react-chartjs-2'
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, ChartData } from 'chart.js';
 import Layout from '../components/Layout'
 import { useContext, useEffect, useState } from 'react';
 import { DataContext } from './_app';
@@ -30,9 +30,9 @@ const chartBorderColors = ['white']
 
 const Home: NextPage = () => {
 
-  const [track1DoughnutData, setTrack1DoughnutData] = useState<any>(null);
-  const [track2DoughnutData, setTrack2DoughnutData] = useState<any>(null);
-  const [yearDoughnutData, setYearDoughnutData] = useState<any>(null);
+  const [track1DoughnutData, setTrack1DoughnutData] = useState<ChartData<"doughnut", number[]>>();
+  const [track2DoughnutData, setTrack2DoughnutData] = useState<ChartData<"doughnut", number[]>>();
+  const [yearDoughnutData, setYearDoughnutData] = useState<ChartData<"doughnut", number[]>>();
   const [numOfApplicants, setNumOfApplicants] = useState(0);
   const { data: APIdata } = useContext(DataContext)
 
