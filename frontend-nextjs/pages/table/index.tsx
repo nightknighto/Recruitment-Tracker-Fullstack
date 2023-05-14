@@ -13,7 +13,7 @@ export const changeSelectionContext = React.createContext<((targ: IRecruitmentDa
 
 export default function Table() {
     const {data, changeData} = useContext(DataContext)
-    const [filteredData, setFilteredData] = useState<IRecruitmentData[] | null>(null)
+    const [filteredData, setFilteredData] = useState<IRecruitmentData[]>()
     const [selectedObj, setSelectedObj] = useState<IRecruitmentData | null>(null)
     const [filterByName, setFilterByName] = useState<string>("")
     const [filterByTrack, setFilterByTrack] = useState<TracksType | 'all'>("all")
