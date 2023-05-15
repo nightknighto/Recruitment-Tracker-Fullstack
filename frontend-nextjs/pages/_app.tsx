@@ -59,6 +59,10 @@ function MyApp({ Component, pageProps }: AppProps) {
       <AuthContext.Provider value={{changeAuth: changeAuth}}>
         <Head>
           <meta name="viewport" content="initial-scale=1, width=device-width" />
+          <title>Recruitment Tracker</title>
+          <meta name="description" content="Dashboard for tracking member registrations for SemiColon student activity." />
+          <meta property="og:title" content="Recruitment Tracker" />
+          <meta property="og:description" content="Dashboard for tracking member registrations for SemiColon student activity." />
         </Head>
         <Component {...pageProps} />
         {!data && authenticated && (
