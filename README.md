@@ -147,7 +147,7 @@ The authentication is done using JWT. The user is authenticated by sending the J
     - password: string
     - role: "admin" | "basic
 
-- [MemberApplication](backend\src\models\memberApplications.model.ts)
+- [MemberApplication](backend/src/models/memberApplications.model.tsmemberApplications.model.ts)
 
 ## Backend Scripts
 
